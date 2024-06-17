@@ -10,6 +10,7 @@ using UnityEditor;
 
 public class MainMenu : MonoBehaviour
 {
+
     public void StartApp()
     {
         Debug.Log("loading main scene...");
@@ -26,4 +27,7 @@ public class MainMenu : MonoBehaviour
 #endif
     }
 
+    public void EditName(string name) {
+        Persistance.Instance.Name = name;
+    }
 }
