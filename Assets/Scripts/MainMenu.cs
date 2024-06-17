@@ -4,14 +4,14 @@ using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
 
-
 #if UNITY_EDITOR
 using UnityEditor;
 #endif
 
 public class MainMenu : MonoBehaviour
 {
-    public void StartApp() {
+    public void StartApp()
+    {
         Debug.Log("loading main scene...");
         SceneManager.LoadScene(1);
     }
