@@ -6,12 +6,16 @@ using UnityEngine;
 
 public class Persistance : MonoBehaviour
 {
+    public event EventHandler OnHighScoreChanged;
+
     public static Persistance Instance;
     public string Name;
     public List<ScoreData> Highscores;
 
     private const string SAVE_FILE_NAME = "/saveFile_persistence.json";
     private string _savePath;
+    public int _lowScore;
+    public int _highScore;
 
     private void Awake()
     {
@@ -28,6 +32,12 @@ public class Persistance : MonoBehaviour
     {
         _savePath = Application.persistentDataPath + SAVE_FILE_NAME;
         Highscores = loadFromPersistence();
+        Highscores.Sort((a, b) => b.Score.CompareTo(a.Score));
+        int idx = Highscores.Count < 10 ? Highscores.Count-1 : 9;
+        _lowScore = Highscores[idx].Score;
+        _highScore = Highscores[0].Score;
+
+        OnHighScoreChanged?.Invoke(this, EventArgs.Empty);
     }
 
     private void saveToPersistence()

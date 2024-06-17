@@ -13,22 +13,24 @@ public class MainManager : MonoBehaviour
     public Text ScoreText;
     public Text HighScoreText;
     public GameObject GameOverText;
-    
+
     private bool m_Started = false;
     private int m_Points;
-    
+
     private bool m_GameOver = false;
 
     // Start is called before the first frame update
     void Start()
     {
         if (Persistance.Instance)
-            HighScoreText.text = $"{Persistance.Instance.Name} highscore: 'unimplemented'";
+            HighScoreText.text = $"{Persistance.Instance.Highscores[0].Name} highscore: {Persistance.Instance.Highscores[0].Score}";
+
+        // Persistance.Instance.OnHighScoreChanged += Persistance_OnHighcoreChanged;
 
         const float step = 0.6f;
         int perLine = Mathf.FloorToInt(4.0f / step);
-        
-        int[] pointCountArray = new [] {1,1,2,2,5,5};
+
+        int[] pointCountArray = new[] { 1, 1, 2, 2, 5, 5 };
         for (int i = 0; i < LineCount; ++i)
         {
             for (int x = 0; x < perLine; ++x)
@@ -76,4 +78,10 @@ public class MainManager : MonoBehaviour
         m_GameOver = true;
         GameOverText.SetActive(true);
     }
+
+    // private void Persistance_OnHighcoreChanged(object sender, System.EventArgs e)
+    // {
+    //     HighScoreText.text = $"{Persistance.Instance.Highscores[0].Name} highscore: {Persistance.Instance.Highscores[0].Score}";
+    // }
+
 }
