@@ -51,7 +51,7 @@ public class MainMenu : MonoBehaviour
         string name = Persistance.Instance.Highscores[0].Name;
         int score = Persistance.Instance.Highscores[0].Score;
 
-        _highscoreText.text = $"HIGHSCORE - {name}: {score}";
+        _highscoreText.text = $"HIGHSCORE {name} {score}";
         Debug.Log($"new highscore -- {name}: {score}");
     }
 
@@ -59,7 +59,7 @@ public class MainMenu : MonoBehaviour
     {
         Debug.Log("on high score changed - main menu");
 
-        _nameInputField.text = Persistance.Instance.Name;
+        _nameInputField.text = Persistance.Instance.Name; // pre-insert the last used name
         updateHighScore();
     }
 }

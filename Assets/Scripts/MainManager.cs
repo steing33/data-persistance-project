@@ -58,7 +58,7 @@ public class MainManager : MonoBehaviour
             updateHighScores();
             Persistance.Instance.Save();
 
-            //FIXME just quit for now -> Pause
+            //TODO just quit for now -> Pause
 #if UNITY_EDITOR
             EditorApplication.ExitPlaymode();
 #else
@@ -93,9 +93,9 @@ public class MainManager : MonoBehaviour
 
     private void updateHighScores()
     {
+        // better than the current low highscore
         if (m_Points > Persistance.Instance._lowScore)
         {
-            // better than the current low highscore
             // find position in sorted list
             int idx = 9;
             for (; idx >= 0; idx--)
@@ -109,10 +109,11 @@ public class MainManager : MonoBehaviour
                     Score = m_Points
                 });
         }
+        // new highest highscore
         if (m_Points > Persistance.Instance._highScore)
         {
             Debug.Log($"new highscore acheived");
-            // new high score
+            
             Persistance.Instance._highScore = m_Points;
             HighScoreText.text = $"{Persistance.Instance.Name} highscore: {m_Points}";
         }
@@ -130,10 +131,4 @@ public class MainManager : MonoBehaviour
         m_GameOver = true;
         GameOverText.SetActive(true);
     }
-
-    // private void Persistance_OnHighcoreChanged(object sender, System.EventArgs e)
-    // {
-    //     HighScoreText.text = $"{Persistance.Instance.Highscores[0].Name} highscore: {Persistance.Instance.Highscores[0].Score}";
-    // }
-
 }
