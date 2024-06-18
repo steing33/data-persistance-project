@@ -6,17 +6,17 @@ using UnityEngine;
 
 public class Persistance : MonoBehaviour
 {
-    public event EventHandler OnHighScoreChanged;
-    public event EventHandler OnNameLoad;
+    public event EventHandler OnDataLoaded;
 
     public static Persistance Instance;
     public string Name;
     public List<ScoreData> Highscores;
-
-    private const string SAVE_FILE_NAME = "/saveFile_persistence.json";
-    private string _savePath;
     public int _lowScore;
     public int _highScore;
+
+    // C:\Users\steing\AppData\LocalLow\DefaultCompany\SimpleBreakout
+    private const string SAVE_FILE_NAME = "/saveFile_persistence.json";
+    private string _savePath;
 
     private void Awake()
     {
@@ -38,12 +38,14 @@ public class Persistance : MonoBehaviour
         _lowScore = Highscores[idx].Score;
         _highScore = Highscores[0].Score;
 
-        OnHighScoreChanged?.Invoke(this, EventArgs.Empty);
-        OnNameLoad?.Invoke(this, EventArgs.Empty);
+        OnDataLoaded?.Invoke(this, EventArgs.Empty);
     }
 
     public void Save()
     {
+        this.Highscores.Sort((a, b) => b.Score.CompareTo(a.Score));
+        this.Highscores = this.Highscores.GetRange(0, 10);  // only keep the top 10
+
         SaveData data = new()
         {
             LastUsedName = this.Name,
@@ -64,6 +66,7 @@ public class Persistance : MonoBehaviour
         }
         else
         {
+            this.Name = "guest";
             this.Highscores = new List<ScoreData>(10);
             for (int i = 0; i < 10; i++)
             {

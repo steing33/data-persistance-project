@@ -20,8 +20,7 @@ public class MainMenu : MonoBehaviour
 
     private void Start()
     {
-        Persistance.Instance.OnHighScoreChanged += Persistance_OnHighScoreChanged;
-        Persistance.Instance.OnNameLoad += Persistance_OnNameLoad;
+        Persistance.Instance.OnDataLoaded += Persistance_OnDataLoaded;
         _nameInputField.text = Persistance.Instance != null ? Persistance.Instance.Name : "guest";
     }
 
@@ -55,15 +54,9 @@ public class MainMenu : MonoBehaviour
         Debug.Log($"new highscore -- {name}: {score}");
     }
 
-    private void Persistance_OnHighScoreChanged(object sender, EventArgs e)
+    private void Persistance_OnDataLoaded(object sender, EventArgs e)
     {
         Debug.Log("on high score changed - main menu");
         updateHighScore();
-    }
-
-    private void Persistance_OnNameLoad(object sender, EventArgs e)
-    {
-        Debug.Log("on name load - main menu");
-        _nameInputField.text = Persistance.Instance.Name;
     }
 }

@@ -4,6 +4,10 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
+#if UNITY_EDITOR
+using UnityEditor;
+#endif
+
 public class MainManager : MonoBehaviour
 {
     public Brick BrickPrefab;
@@ -18,6 +22,7 @@ public class MainManager : MonoBehaviour
     private int m_Points;
 
     private bool m_GameOver = false;
+
 
     // Start is called before the first frame update
     void Start()
@@ -45,6 +50,22 @@ public class MainManager : MonoBehaviour
 
     private void Update()
     {
+        // at any point hit esc to pause the game
+        if (Input.GetKeyDown(KeyCode.Escape))
+        {
+            Debug.Log("escape pressed");
+
+            updateHighScores();
+            Persistance.Instance.Save();
+
+            //FIXME just quit for now -> Pause
+#if UNITY_EDITOR
+            EditorApplication.ExitPlaymode();
+#else
+            Application.Quit();
+#endif
+        }
+
         if (!m_Started)
         {
             if (Input.GetKeyDown(KeyCode.Space))
@@ -60,17 +81,38 @@ public class MainManager : MonoBehaviour
         }
         else if (m_GameOver)
         {
+
             if (Input.GetKeyDown(KeyCode.Space))
             {
+                updateHighScores();
+                Persistance.Instance.Save();
                 SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
             }
-            if (Input.GetKeyDown(KeyCode.Escape))
-            {
-                Persistance.Instance.Save();
-            }
         }
-
     }
+
+    // FIXME: adding too many scores - because Update()?
+    private void updateHighScores()
+    {
+        if (m_Points > Persistance.Instance._lowScore)
+        {
+            // better than the current low highscore
+            Persistance.Instance.Highscores.Add(
+                new Persistance.ScoreData()
+                {
+                    Name = Persistance.Instance.Name,
+                    Score = m_Points
+                });
+        }
+        if (m_Points > Persistance.Instance._highScore)
+        {
+            Debug.Log($"new highscore acheived");
+            // new high score
+            Persistance.Instance._highScore = m_Points;
+            HighScoreText.text = $"{Persistance.Instance.Name} highscore: {m_Points}";
+        }
+    }
+
 
     void AddPoint(int point)
     {
