@@ -64,7 +64,12 @@ public class MainManager : MonoBehaviour
             {
                 SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
             }
+            if (Input.GetKeyDown(KeyCode.Escape))
+            {
+                Persistance.Instance.Save();
+            }
         }
+
     }
 
     void AddPoint(int point)
