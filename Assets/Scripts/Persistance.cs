@@ -34,8 +34,7 @@ public class Persistance : MonoBehaviour
         _savePath = Application.persistentDataPath + SAVE_FILE_NAME;
         loadFromPersistence();
         Highscores.Sort((a, b) => b.Score.CompareTo(a.Score));
-        int idx = Highscores.Count < 10 ? Highscores.Count - 1 : 9;
-        _lowScore = Highscores[idx].Score;
+        _lowScore = Highscores[9].Score;
         _highScore = Highscores[0].Score;
 
         OnDataLoaded?.Invoke(this, EventArgs.Empty);

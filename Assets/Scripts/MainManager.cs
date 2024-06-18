@@ -91,13 +91,18 @@ public class MainManager : MonoBehaviour
         }
     }
 
-    // FIXME: adding too many scores - because Update()?
     private void updateHighScores()
     {
         if (m_Points > Persistance.Instance._lowScore)
         {
             // better than the current low highscore
-            Persistance.Instance.Highscores.Add(
+            // find position in sorted list
+            int idx = 9;
+            for (; idx >= 0; idx--)
+                if (m_Points >= Persistance.Instance.Highscores[idx].Score)
+                    break;
+            
+            Persistance.Instance.Highscores.Insert(idx,
                 new Persistance.ScoreData()
                 {
                     Name = Persistance.Instance.Name,
